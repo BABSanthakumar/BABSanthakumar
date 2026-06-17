@@ -378,6 +378,86 @@ add_text(slide7, "Recommended Model Strategy:", 0.5, 5.4, 5, 0.4, font_size=13, 
 add_text(slide7, "Simple tasks → Haiku 4.5 ($1/$5)  |  Daily coding → Sonnet 4.6 ($3/$15)  |  Complex / Agents → Opus 4.8 ($5/$25)  |  Hardest → Fable 5 ($10/$50)", 0.5, 5.82, 12.33, 0.5, font_size=12, color=LIGHT_GRAY)
 add_text(slide7, "Always enable: Adaptive Thinking  ·  Prompt Caching  ·  Streaming  ·  Token Count API before large calls", 0.5, 6.3, 12.33, 0.5, font_size=12, color=LIGHT_GRAY)
 
+# ─────────────────────────────────────────────
+# SLIDE 8: Real Task — User Login Dashboard
+# ─────────────────────────────────────────────
+slide8 = prs.slides.add_slide(blank_layout)
+set_bg(slide8, DARK_BG)
+add_rect(slide8, 0, 0, 13.33, 0.08, ACCENT)
+
+add_text(slide8, "Real Task: Build a User Login Dashboard", 0.3, 0.15, 12.5, 0.65, font_size=24, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+add_text(slide8, "Token & cost breakdown for the same task on Web vs IDE", 0.3, 0.75, 12.5, 0.38, font_size=13, color=RGBColor(0x90,0x90,0x90), align=PP_ALIGN.CENTER)
+
+# Task description box
+add_rect(slide8, 0.3, 1.18, 12.73, 0.58, DARK_CARD, ACCENT, 1)
+add_text(slide8, '📋  Task: "Create a login page with email/password form, JWT auth, session dashboard showing user info & last login time"', 0.5, 1.25, 12.3, 0.45, font_size=12.5, color=ACCENT)
+
+# --- WEB column ---
+add_rect(slide8, 0.3, 1.9, 6.1, 4.55, DARK_CARD, BLUE, 1.5)
+add_text(slide8, "🌐  Web — Claude Opus 4.8", 0.5, 1.95, 5.8, 0.45, font_size=14, bold=True, color=BLUE)
+
+web_tok = [
+    ("System prompt (per turn)",     "~1,200 tokens",  "cached after 1st call"),
+    ("User prompt",                  "~320 tokens",    "one-time"),
+    ("File context (HTML/JS/CSS)",   "~2,800 tokens",  "cached after 1st edit"),
+    ("Model output (code + explain)","~3,500 tokens",  "output, billed full"),
+    ("Tool calls (write 4 files)",   "~900 tokens",    "input side"),
+    ("Total input tokens",           "~5,020 tokens",  "1,200 cached"),
+    ("Total output tokens",          "~3,500 tokens",  ""),
+]
+col_x = [0.45, 4.0, 5.45]
+col_w = [3.5, 1.4, 0.9]
+y_start = 2.48
+for i, (label, val, note) in enumerate(web_tok):
+    y = y_start + i * 0.48
+    bg = DARK_BG if i % 2 == 0 else RGBColor(0x12,0x20,0x30)
+    add_rect(slide8, 0.32, y, 6.06, 0.45, bg)
+    is_total = label.startswith("Total")
+    fc = ACCENT if is_total else LIGHT_GRAY
+    add_text(slide8, label, 0.45, y+0.05, 3.45, 0.36, font_size=11, bold=is_total, color=fc)
+    add_text(slide8, val,   4.0,  y+0.05, 1.4,  0.36, font_size=11, bold=is_total, color=WHITE, align=PP_ALIGN.RIGHT)
+    add_text(slide8, note,  5.45, y+0.05, 0.9,  0.36, font_size=9, color=RGBColor(0x70,0x90,0x70), align=PP_ALIGN.LEFT)
+
+# Cost calc web
+add_rect(slide8, 0.32, 5.85, 6.06, 0.52, RGBColor(0x05,0x18,0x30), BLUE, 1)
+add_text(slide8, "💰  Est. Cost:", 0.45, 5.9, 2.5, 0.38, font_size=12.5, bold=True, color=BLUE)
+# Input: (5020-1200)*5/1M + 1200*0.5/1M = ~0.019+0.0006 | Output: 3500*25/1M = ~0.0875 → ~$0.107 uncached
+# With cache: input cached portion saves 90% → ~$0.092 total
+add_text(slide8, "~$0.09  (with prompt cache)", 2.8, 5.9, 3.5, 0.38, font_size=12.5, bold=True, color=WHITE)
+
+# --- IDE column ---
+add_rect(slide8, 7.1, 1.9, 6.1, 4.55, DARK_CARD, GREEN, 1.5)
+add_text(slide8, "💻  IDE — Claude Sonnet 4.6", 7.3, 1.95, 5.8, 0.45, font_size=14, bold=True, color=GREEN)
+
+ide_tok = [
+    ("System prompt (per turn)",     "~1,200 tokens",  "cached (5-min TTL)"),
+    ("User prompt",                  "~320 tokens",    "one-time"),
+    ("File context (read 6 files)",  "~4,200 tokens",  "cached after 1st read"),
+    ("Model output (code + explain)","~3,500 tokens",  "output, billed full"),
+    ("Tool calls (edit/write files)","~600 tokens",    "input side"),
+    ("Total input tokens",           "~6,320 tokens",  "5,400 cached"),
+    ("Total output tokens",          "~3,500 tokens",  ""),
+]
+for i, (label, val, note) in enumerate(ide_tok):
+    y = y_start + i * 0.48
+    bg = DARK_BG if i % 2 == 0 else RGBColor(0x10,0x22,0x15)
+    add_rect(slide8, 7.12, y, 6.06, 0.45, bg)
+    is_total = label.startswith("Total")
+    fc = ACCENT if is_total else LIGHT_GRAY
+    add_text(slide8, label, 7.25, y+0.05, 3.45, 0.36, font_size=11, bold=is_total, color=fc)
+    add_text(slide8, val,   10.8, y+0.05, 1.4,  0.36, font_size=11, bold=is_total, color=WHITE, align=PP_ALIGN.RIGHT)
+    add_text(slide8, note,  12.25,y+0.05, 0.85, 0.36, font_size=9, color=RGBColor(0x70,0x90,0x70), align=PP_ALIGN.LEFT)
+
+# Cost calc IDE
+add_rect(slide8, 7.12, 5.85, 6.06, 0.52, RGBColor(0x05,0x20,0x0A), GREEN, 1)
+add_text(slide8, "💰  Est. Cost:", 7.25, 5.9, 2.5, 0.38, font_size=12.5, bold=True, color=GREEN)
+# Input: (6320-5400)*3/1M + 5400*0.3/1M = 0.00276+0.00162 | Output: 3500*15/1M = 0.0525 → ~$0.057 w/ cache
+add_text(slide8, "~$0.055  (Sonnet + cache)", 9.6, 5.9, 3.5, 0.38, font_size=12.5, bold=True, color=WHITE)
+
+# savings banner
+add_rect(slide8, 0.3, 6.47, 12.73, 0.75, RGBColor(0x1A, 0x14, 0x03), ACCENT, 1.5)
+add_text(slide8, "🏆  IDE saves ~40% on this task  |  Repeat runs (cache warm): IDE ~$0.016  vs  Web ~$0.032  |  Batch mode: extra 50% off", 0.5, 6.55, 12.33, 0.55, font_size=13, bold=True, color=ACCENT, align=PP_ALIGN.CENTER)
+
 # Save
 prs.save("/home/user/BABSanthakumar/Claude_Web_vs_IDE.pptx")
 print("Saved: Claude_Web_vs_IDE.pptx")
