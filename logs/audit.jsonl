@@ -1,0 +1,2 @@
+{"timestamp": "2026-07-26T06:32:01Z", "session_id": "unknown", "user": "root", "event": "session_end", "input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+{"timestamp": "2026-07-26T06:32:06Z", "session_id": "cd032740-78b2-5340-bae6-616980d5037f", "user": "root", "tool": "Bash", "file": "", "command": "git status"}
